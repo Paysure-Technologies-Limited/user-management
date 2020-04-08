@@ -163,7 +163,7 @@ public class UserManagementService  implements UserDetailsService {
     public LoginResponseHelper authenticateUser(LoginHelper loginHelper) throws GoTaxException {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginHelper.getUserId(), loginHelper.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginHelper.getEmailAddress(), loginHelper.getPassword()));
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         String jwt = "";

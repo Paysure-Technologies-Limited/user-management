@@ -53,7 +53,7 @@ public class UserManagementController {
     }
 
     @PostMapping("/v1/user/signin")
-    public LoginResponseHelper authenticateUser(@Valid @RequestBody LoginHelper loginHelper) {
+    public LoginResponseHelper authenticateUser(@Valid @RequestBody LoginHelper loginHelper) throws GoTaxException {
         return userManagementService.authenticateUser(loginHelper);
     }
 

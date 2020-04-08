@@ -8,9 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,22 +21,25 @@ public class UserDetailsImpl implements UserDetails {
 
     private String userId;
     private String username;
-    private String email;
+    private String phoneNumber;
     @JsonIgnore
     private String password;
     private boolean activeStatus;
-    private Collection<? extends GrantedAuthority> authorities;
+    private String role;
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRoleId().getRoleName()));
         return new UserDetailsImpl(
                 user.getUserId(),
-                user.getMobileNumber(),
                 user.getEmailAddress(),
+                user.getMobileNumber(),
                 user.getPassword(),
                 user.isActiveStatus(),
-                authorities);
+                user.getRoleId().getRoleName());
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     @Override

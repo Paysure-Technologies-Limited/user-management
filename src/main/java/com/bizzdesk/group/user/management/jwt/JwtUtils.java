@@ -24,9 +24,14 @@ public class JwtUtils {
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        Claims claims = Jwts.claims().setSubject(userPrincipal.getUsername());
+        claims.put("role", userPrincipal.getRole());
+        claims.put("phoneNumber", userPrincipal.getPhoneNumber());
+        claims.put("activeStatus", userPrincipal.isActiveStatus());
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
