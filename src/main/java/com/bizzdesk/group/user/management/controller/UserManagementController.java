@@ -46,7 +46,7 @@ public class UserManagementController {
         userManagementService.createUser(userHelper);
     }
 
-    @PostMapping(value = "/v1/user/activate")
+    @GetMapping(value = "/v1/user/activate")
     public void activateAccount(@RequestParam(value = "userId") String userId,
                                 @RequestParam(value = "verificationCode") String verificationCode) throws GoTaxException {
         userManagementService.activateAccount(userId, verificationCode);
