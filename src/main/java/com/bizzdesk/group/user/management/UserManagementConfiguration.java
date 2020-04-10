@@ -1,6 +1,6 @@
 package com.bizzdesk.group.user.management;
 
-import com.bizzdesk.group.user.management.kafka.channel.EmailChannel;
+import com.bizzdesk.group.user.management.kafka.channel.VerificationEmailChannel;
 import com.bizzdesk.group.user.management.kafka.channel.PasswordResetChannel;
 import com.google.common.base.Predicate;
 import com.gotax.framework.library.filter.LogFilter;
@@ -23,7 +23,7 @@ import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
-@EnableBinding({EmailChannel.class, GoTaxLogChannel.class, PasswordResetChannel.class})
+@EnableBinding({VerificationEmailChannel.class, GoTaxLogChannel.class, PasswordResetChannel.class})
 @EnableSwagger2
 public class UserManagementConfiguration {
 

@@ -3,7 +3,7 @@ package com.bizzdesk.group.user.management.service;
 import com.bizzdesk.group.user.management.entities.Role;
 import com.bizzdesk.group.user.management.entities.User;
 import com.bizzdesk.group.user.management.jwt.JwtUtils;
-import com.bizzdesk.group.user.management.kafka.channel.EmailChannel;
+import com.bizzdesk.group.user.management.kafka.channel.VerificationEmailChannel;
 import com.bizzdesk.group.user.management.kafka.channel.PasswordResetChannel;
 import com.bizzdesk.group.user.management.mapper.RoleHelperToRole;
 import com.bizzdesk.group.user.management.mapper.UserHelperToUser;
@@ -35,7 +35,7 @@ public class UserManagementService  implements UserDetailsService {
 
     private RoleRepository roleRepository;
     private UserRepository userRepository;
-    private EmailChannel emailChannel;
+    private VerificationEmailChannel verificationEmailChannel;
     private PasswordResetChannel passwordResetChannel;
     private AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
@@ -45,13 +45,13 @@ public class UserManagementService  implements UserDetailsService {
     private int lengthOfVerificationCode;
 
     @Autowired
-    public UserManagementService(RoleRepository roleRepository, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, EmailChannel emailChannel, PasswordResetChannel passwordResetChannel) {
+    public UserManagementService(RoleRepository roleRepository, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, VerificationEmailChannel verificationEmailChannel, PasswordResetChannel passwordResetChannel) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
-        this.emailChannel = emailChannel;
+        this.verificationEmailChannel = verificationEmailChannel;
         this.passwordResetChannel = passwordResetChannel;
     }
 
@@ -83,7 +83,7 @@ public class UserManagementService  implements UserDetailsService {
                         .setUserId(UUID.randomUUID().toString());
                 userRepository.save(user);
                 AccountCreationEmailHelper accountCreationEmailHelper = UserToAccountCreationEmailHelper.createEmailHelperFromUser(user);
-                emailChannel.output().send(MessageBuilder.withPayload(accountCreationEmailHelper).build());
+                verificationEmailChannel.output().send(MessageBuilder.withPayload(accountCreationEmailHelper).build());
             }
         }
     }
